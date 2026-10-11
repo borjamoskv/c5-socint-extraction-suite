@@ -9,7 +9,7 @@
 [![Python: 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20(Pure%20Stdlib)-orange.svg)](#zero-dependency-guarantee)
-[![Tests: 35/35](https://img.shields.io/badge/Tests-35%2F35%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
+[![Tests: 40/40](https://img.shields.io/badge/Tests-40%2F40%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
 
 ---
 
@@ -80,11 +80,18 @@ Motor léxico puro de valencia y excitación emocional:
 - **Volatilidad Emocional:** Desviación estándar de sentimiento entre comentarios.
 - **Alerta de Indignación Polarizada (Manufactured Outrage):** Detecta campañas hostiles coordinadas con fuerte sesgo negativo y alta volatilidad.
 
-### ActorNetwork & Extracción de Grafos de Entidad
+### ActorNetwork & Métricas de Centralidad (PageRank & Degree)
 Construye sobre la marcha el grafo de interacción social extrayendo menciones (`@usuario`, `u/autor`), dominios citados y relaciones de réplica/recomendación:
+- **Centralidad de Grado & PageRank:** Cálculo matricial por Power Iteration sin NumPy ni dependencias (`--centrality-check`). Identifica autoridades y puentes de influencia.
 - **Gephi XML GEXF:** Formato nativo de grafos para análisis de centralidad y comunidades (`--export-gexf`).
 - **Visualización Mermaid:** Exportación directa a diagramas compatibles con GitHub y editores Markdown (`--export-mermaid`).
 - **Graphviz DOT:** Topologías de red exportables a formatos vectoriales para Graphviz (`--export-dot`).
+
+### CoordinatedActionMatrix & Sincronización Temporal (CIB Co-Occurrence)
+Identifica parejas de actores que intervienen en proximidad temporal estrecha ($\Delta t \le 60\text{s}$) sobre el mismo objetivo, calculando un score de sincronización CIB para desenmascarar cuentas títere orquestadas (`--cib-matrix`).
+
+### StixThreatIntel & Exportación STIX 2.1 (OASIS Open Standard)
+Genera paquetes estándar de inteligencia de amenazas STIX 2.1 (`identity`, `observed-data`, `indicator`, `relationship`) compatibles de forma inmediata con OpenCTI, MISP, Maltego y Splunk (`--export-stix threat_intel.json`).
 
 ### Bóveda Local SQLite WAL
 Almacenamiento transaccional local (`~/.gemini/antigravity/socint_vault.db`) en modo WAL (Write-Ahead Logging), garantizando cero filtración de telemetría a infraestructuras en la nube.
@@ -126,6 +133,11 @@ socint --pivot "borjamoskv"
 ### Auditoría Forense Completa con Detección de Ráfagas (CIB) y Dispersión Léxica
 ```bash
 socint --url "https://reddit.com/r/technology/comments/xyz123/title/" --burst-check --lexical-check
+```
+
+### Centralidad de Red, Matriz CIB y Exportación STIX 2.1
+```bash
+socint --url "https://news.ycombinator.com/item?id=40000000" --centrality-check --cib-matrix --export-stix threat_intel.json
 ```
 
 ### Exportación a Gephi GEXF y Diagrama Mermaid
@@ -201,8 +213,13 @@ python3 tests/test_socint.py
   [PASS] 33. SentimentAffectEngine Valence & Polarity Scoring (Zero Dependencies)
   [PASS] 34. SentimentAffectEngine Outrage & Emotional Volatility Detection
   [PASS] 35. Full Omnivector Attestation Report (Merkle + Sentiment + Topology)
+  [PASS] 36. ActorNetwork Degree Centrality (In-Degree & Out-Degree)
+  [PASS] 37. Power Iteration PageRank Convergence & Influencer Ranking
+  [PASS] 38. CoordinatedActionMatrix CIB Co-Occurrence & Burst Pairing
+  [PASS] 39. STIX 2.1 Threat Intel Bundle Generation & Spec Validation
+  [PASS] 40. End-to-End Omnivector Attestation Dossier (Merkle + STIX + Centrality + Affect)
 
-[✓] ALL 35/35 OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.
+[✓] ALL 40/40 OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.
 ```
 
 ---
