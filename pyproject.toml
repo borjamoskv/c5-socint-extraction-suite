@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "c5-socint-extraction-suite"
+version = "1.0.0"
+description = "Omnivector Social Intelligence (SOCINT) & Forensic Extraction Engine in Pure Python Standard Library (11 Platforms, Zero Dependencies, Epistemic Tiering, Astroturf Detection)"
+readme = "README.md"
+authors = [
+  { name = "Borja Fernández Angulo", email = "borjamoskv@gmail.com" }
+]
+license = { text = "MIT" }
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Topic :: Security",
+]
+keywords = [
+  "socint",
+  "osint",
+  "social-intelligence",
+  "zero-dependency",
+  "epistemic-classification",
+  "astroturf-detection",
+  "twitter",
+  "bluesky",
+  "reddit",
+  "substack",
+  "hacker-news",
+  "polymarket"
+]
+requires-python = ">=3.9"
+dependencies = []
+
+[project.scripts]
+socint = "socint.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/borjamoskv/c5-socint-extraction-suite"
+Repository = "https://github.com/borjamoskv/c5-socint-extraction-suite"
+
+[tool.setuptools.packages.find]
+where = ["src"]
