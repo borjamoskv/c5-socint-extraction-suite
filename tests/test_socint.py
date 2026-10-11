@@ -18,6 +18,7 @@ sys.path.insert(0, str(project_root / "src"))
 from socint.core import (
     EpistemicClassifier,
     AstroturfDetector,
+    ActorNetwork,
     calculate_shannon_entropy,
     clean_html,
     XAdapter,
@@ -35,10 +36,12 @@ from socint.core import (
     vault_stats,
     vault_query,
     generate_markdown_report,
+    generate_html_report,
+    generate_csv_report,
 )
 
 def run_tests():
-    print("=== SOCINT C5-REAL DETERMINISTIC TEST SUITE (20/20 OMNIVECTOR) ===")
+    print("=== SOCINT C5-REAL DETERMINISTIC TEST SUITE (25/25 OMNIVECTOR) ===")
     passed = 0
     total = 0
 
@@ -289,6 +292,66 @@ def run_tests():
         assert "Auditoría de Wikipedia" in md_wiki
     passed += 1
     print("  [PASS] 20. SQLite Readonly Query CLI & Omnivector Markdown Report Rendering")
+
+    # 21. ActorNetwork Extraction Test
+    total += 1
+    mock_post_for_net = {
+        "platform": "x",
+        "author": "borjamoskv",
+        "text": "Colaborando con @alice y @bob sobre https://arxiv.org/abs/2105.0000",
+        "comments": [
+            {"author": "carol", "body": "De acuerdo con @borjamoskv, revisa https://github.com"},
+            {"author": "dave", "body": "Totalmente alineado con la tesis de @alice"}
+        ],
+        "recommendations": [{"name": "Substack Alpha"}]
+    }
+    net = ActorNetwork.extract_from_data(mock_post_for_net)
+    net_dict = net.to_dict()
+    assert "borjamoskv" in net_dict["nodes"]
+    assert "alice" in net_dict["nodes"]
+    assert "carol" in net_dict["nodes"]
+    assert net_dict["total_nodes"] >= 4
+    assert net_dict["total_edges"] >= 3
+    passed += 1
+    print("  [PASS] 21. ActorNetwork Mentions, Links & Interactions Extraction")
+
+    # 22. ActorNetwork Mermaid Export
+    total += 1
+    mermaid_str = net.to_mermaid()
+    assert mermaid_str.startswith("graph TD")
+    assert "borjamoskv" in mermaid_str or "n_" in mermaid_str
+    passed += 1
+    print("  [PASS] 22. ActorNetwork Mermaid Graph Serialization")
+
+    # 23. ActorNetwork Graphviz DOT Export
+    total += 1
+    dot_str = net.to_dot()
+    assert dot_str.startswith("digraph ActorNetwork {")
+    assert "rankdir=LR;" in dot_str
+    assert "borjamoskv" in dot_str
+    passed += 1
+    print("  [PASS] 23. ActorNetwork Graphviz DOT Graph Serialization")
+
+    # 24. Standalone HTML Forensic Dashboard Export
+    total += 1
+    html_rep = generate_html_report(mock_post_for_net, epistemic_audit=audit, astroturf_audit=res_bot, actor_network=net)
+    assert "<!DOCTYPE html>" in html_rep
+    assert "EPISTEMIC SNR" in html_rep
+    assert "ASTROTURF RISK" in html_rep
+    assert "ACTOR NETWORK" in html_rep
+    assert "borjamoskv" in html_rep
+    passed += 1
+    print("  [PASS] 24. Standalone HTML Forensic Dashboard Generation (Zero CDN, Offline)")
+
+    # 25. Tabular CSV Export
+    total += 1
+    csv_rep = generate_csv_report([mock_hn, mock_bsky, mock_post_for_net])
+    assert "platform,url,author,extracted_at,epistemic_snr,astroturf_risk,total_comments,content_preview" in csv_rep
+    assert "hackernews" in csv_rep
+    assert "bluesky" in csv_rep
+    assert "borjamoskv" in csv_rep
+    passed += 1
+    print("  [PASS] 25. Tabular CSV Export (RFC 4180 Escaping & Extraction)")
 
     print(f"\n[✓] ALL {passed}/{total} OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.")
 

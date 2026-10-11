@@ -9,7 +9,7 @@
 [![Python: 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20(Pure%20Stdlib)-orange.svg)](#zero-dependency-guarantee)
-[![Tests: 20/20](https://img.shields.io/badge/Tests-20%2F20%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
+[![Tests: 25/25](https://img.shields.io/badge/Tests-25%2F25%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
 
 ---
 
@@ -59,6 +59,11 @@ $$\text{Riesgo} = \min(1{,}0, \; 0{,}35 \cdot C_{\text{autor}} + 1{,}30 \cdot R_
 
 Detecta patrones donde cuentas con identificadores formalmente distintos copian y pegan el mismo mensaje o plantilla propagandística con pequeñas variaciones.
 
+### ActorNetwork & Extracción de Grafos de Entidad
+Construye sobre la marcha el grafo de interacción social extrayendo menciones (`@usuario`, `u/autor`), dominios citados y relaciones de réplica/recomendación:
+- **Visualización Mermaid:** Exportación directa a diagramas compatibles con GitHub y editores Markdown (`--export-mermaid`).
+- **Graphviz DOT:** Topologías de red exportables a formatos vectoriales para Gephi o Graphviz (`--export-dot`).
+
 ### Bóveda Local SQLite WAL
 Almacenamiento transaccional local (`~/.gemini/antigravity/socint_vault.db`) en modo WAL (Write-Ahead Logging), garantizando cero filtración de telemetría a infraestructuras en la nube.
 
@@ -88,22 +93,22 @@ También puede ejecutarse directamente sin instalación:
 
 ### Extracción de Hilo en X (Twitter) con Desenlace Completo
 ```bash
-socint --target "https://x.com/borjamoskv/status/123456789" --unfold --save-vault
+socint --url "https://x.com/borjamoskv/status/123456789" --unfold --save-vault
 ```
 
-### Auditoría Forense de un Hilo de Reddit con Detección de Astroturfing
+### Generación de Dossier Forense Interactivo (Dashboard HTML Offline)
 ```bash
-socint --target "https://reddit.com/r/technology/comments/xyz123/title/" --astroturf-check
+socint --url "https://reddit.com/r/technology/comments/xyz123/title/" --format html -o dossier.html
 ```
 
-### Análisis de Árbol de Discusión en Hacker News
+### Exportación Tabular para Datasets Forenses (CSV RFC 4180)
 ```bash
-socint --target "https://news.ycombinator.com/item?id=40000000" --format markdown
+socint --batch urls.txt --format csv -o dataset.csv
 ```
 
-### Telemetría de Mercados de Predicción (Polymarket / Manifold)
+### Mapeo de Red de Actores y Exportación a Diagrama Mermaid
 ```bash
-socint --target "https://polymarket.com/event/fed-rate-cut-november"
+socint --url "https://news.ycombinator.com/item?id=40000000" --network --export-mermaid red.mmd
 ```
 
 ### Consulta de Bóveda Local SQLite
@@ -112,7 +117,7 @@ socint --target "https://polymarket.com/event/fed-rate-cut-november"
 socint --stats
 
 # Búsqueda semántica o por palabras clave en telemetría archivada
-socint --query "Chentsov"
+socint --vault-query "SELECT platform, author, extracted_at FROM socint_vault;"
 ```
 
 ---
@@ -128,7 +133,7 @@ python3 tests/test_socint.py
 ```
 
 ```text
-=== SOCINT C5-REAL DETERMINISTIC TEST SUITE (20/20 OMNIVECTOR) ===
+=== SOCINT C5-REAL DETERMINISTIC TEST SUITE (25/25 OMNIVECTOR) ===
   [PASS] 01. X / Twitter URL Parsing (Tweets & Profiles)
   [PASS] 02. Substack URL Parsing (Posts & Publications)
   [PASS] 03. Reddit URL Parsing (Threads, Subreddits & Users)
@@ -149,8 +154,13 @@ python3 tests/test_socint.py
   [PASS] 18. GitHub Feed & Commit Data Normalization
   [PASS] 19. Wikipedia Revision Forensics & Edit War Analysis
   [PASS] 20. SQLite Readonly Query CLI & Omnivector Markdown Report Rendering
+  [PASS] 21. ActorNetwork Mentions, Links & Interactions Extraction
+  [PASS] 22. ActorNetwork Mermaid Graph Serialization
+  [PASS] 23. ActorNetwork Graphviz DOT Graph Serialization
+  [PASS] 24. Standalone HTML Forensic Dashboard Generation (Zero CDN, Offline)
+  [PASS] 25. Tabular CSV Export (RFC 4180 Escaping & Extraction)
 
-[✓] ALL 20/20 OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.
+[✓] ALL 25/25 OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.
 ```
 
 ---
