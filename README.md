@@ -9,7 +9,7 @@
 [![Python: 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20(Pure%20Stdlib)-orange.svg)](#zero-dependency-guarantee)
-[![Tests: 25/25](https://img.shields.io/badge/Tests-25%2F25%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
+[![Tests: 30/30](https://img.shields.io/badge/Tests-30%2F30%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
 
 ---
 
@@ -59,6 +59,18 @@ $$\text{Riesgo} = \min(1{,}0, \; 0{,}35 \cdot C_{\text{autor}} + 1{,}30 \cdot R_
 
 Detecta patrones donde cuentas con identificadores formalmente distintos copian y pegan el mismo mensaje o plantilla propagandística con pequeñas variaciones.
 
+### TemporalForensics & Detección de Ráfagas Coordinadas (CIB)
+Evalúa los intervalos entre comentarios ($\Delta t$) calculando el parámetro de Burstiness $B = \frac{\sigma - \mu}{\sigma + \mu} \in [-1, 1]$ y el factor de Fano ($F = \frac{\sigma^2}{\mu}$):
+- **Inyección Periódica ($B \le -0.70$):** Detecta bots cronometrados y scripts de goteo deterministas.
+- **Ráfagas Coordinadas ($B > 0.25$, $\ge 3$ comentarios en $\le 15$s):** Detecta ataques coordinados de bots o spam sincronizado.
+- **Llegada Poissoniana:** Comportamiento estocástico orgánico de usuarios humanos.
+
+### LexicalDispersion & Entropía Hapax Legomena
+Mide la riqueza del vocabulario y la tasa de términos únicos (Hapax Legomena) frente a la masa total de tokens, discriminando texto sintético o plantillas prefabricadas de LLMs frente a la prosa humana espontánea.
+
+### IdentityPivotEngine & Dossier Unificado OSINT
+Genera objetivos de investigación unificada expandiendo cualquier handle hacia las plataformas soportadas (X, Bluesky, GitHub, Telegram, Reddit, Substack, YouTube, Hacker News, Mastodon) mediante `--pivot`.
+
 ### ActorNetwork & Extracción de Grafos de Entidad
 Construye sobre la marcha el grafo de interacción social extrayendo menciones (`@usuario`, `u/autor`), dominios citados y relaciones de réplica/recomendación:
 - **Visualización Mermaid:** Exportación directa a diagramas compatibles con GitHub y editores Markdown (`--export-mermaid`).
@@ -94,6 +106,16 @@ También puede ejecutarse directamente sin instalación:
 ### Extracción de Hilo en X (Twitter) con Desenlace Completo
 ```bash
 socint --url "https://x.com/borjamoskv/status/123456789" --unfold --save-vault
+```
+
+### Dossier de Identidad Cruzada (OSINT Pivot hacia 11 Plataformas)
+```bash
+socint --pivot "borjamoskv"
+```
+
+### Auditoría Forense Completa con Detección de Ráfagas (CIB) y Dispersión Léxica
+```bash
+socint --url "https://reddit.com/r/technology/comments/xyz123/title/" --burst-check --lexical-check
 ```
 
 ### Generación de Dossier Forense Interactivo (Dashboard HTML Offline)
@@ -133,7 +155,7 @@ python3 tests/test_socint.py
 ```
 
 ```text
-=== SOCINT C5-REAL DETERMINISTIC TEST SUITE (25/25 OMNIVECTOR) ===
+=== SOCINT C5-REAL DETERMINISTIC TEST SUITE (30/30 OMNIVECTOR) ===
   [PASS] 01. X / Twitter URL Parsing (Tweets & Profiles)
   [PASS] 02. Substack URL Parsing (Posts & Publications)
   [PASS] 03. Reddit URL Parsing (Threads, Subreddits & Users)
@@ -159,8 +181,13 @@ python3 tests/test_socint.py
   [PASS] 23. ActorNetwork Graphviz DOT Graph Serialization
   [PASS] 24. Standalone HTML Forensic Dashboard Generation (Zero CDN, Offline)
   [PASS] 25. Tabular CSV Export (RFC 4180 Escaping & Extraction)
+  [PASS] 26. TemporalForensics Periodic Bot Drip / Scheduler Detection
+  [PASS] 27. TemporalForensics Coordinated Burst Detection (CIB Bot Burst)
+  [PASS] 28. LexicalDispersion & Hapax Legomena Richness (Anti-LLM Monotony)
+  [PASS] 29. IdentityPivotEngine Cross-Platform Footprint Dossier Generation
+  [PASS] 30. Full Omnivector Report Synthesis (Temporal + Lexical + Epistemic)
 
-[✓] ALL 25/25 OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.
+[✓] ALL 30/30 OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.
 ```
 
 ---

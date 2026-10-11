@@ -4,13 +4,16 @@ Motor omnivectorial de extracción, normalización, detección de astroturfing y
 epistemológica de telemetría discursiva en 11 plataformas públicas (stdlib pura).
 """
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 __author__ = "Borja Fernández Angulo"
 
 from .core import (
     EpistemicClassifier,
     AstroturfDetector,
     ActorNetwork,
+    TemporalForensics,
+    LexicalDispersion,
+    IdentityPivotEngine,
     calculate_shannon_entropy,
     clean_html,
     XAdapter,
@@ -37,6 +40,9 @@ __all__ = [
     "EpistemicClassifier",
     "AstroturfDetector",
     "ActorNetwork",
+    "TemporalForensics",
+    "LexicalDispersion",
+    "IdentityPivotEngine",
     "calculate_shannon_entropy",
     "clean_html",
     "XAdapter",
