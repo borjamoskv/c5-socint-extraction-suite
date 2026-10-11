@@ -4,7 +4,7 @@ Motor omnivectorial de extracción, normalización, detección de astroturfing y
 epistemológica de telemetría discursiva en 11 plataformas públicas (stdlib pura).
 """
 
-__version__ = "1.2.0"
+__version__ = "1.3.0"
 __author__ = "Borja Fernández Angulo"
 
 from .core import (
@@ -14,6 +14,8 @@ from .core import (
     TemporalForensics,
     LexicalDispersion,
     IdentityPivotEngine,
+    SentimentAffectEngine,
+    compute_merkle_root,
     calculate_shannon_entropy,
     clean_html,
     XAdapter,
@@ -43,6 +45,8 @@ __all__ = [
     "TemporalForensics",
     "LexicalDispersion",
     "IdentityPivotEngine",
+    "SentimentAffectEngine",
+    "compute_merkle_root",
     "calculate_shannon_entropy",
     "clean_html",
     "XAdapter",

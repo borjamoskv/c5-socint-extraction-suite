@@ -9,7 +9,7 @@
 [![Python: 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20(Pure%20Stdlib)-orange.svg)](#zero-dependency-guarantee)
-[![Tests: 30/30](https://img.shields.io/badge/Tests-30%2F30%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
+[![Tests: 35/35](https://img.shields.io/badge/Tests-35%2F35%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
 
 ---
 
@@ -71,10 +71,20 @@ Mide la riqueza del vocabulario y la tasa de términos únicos (Hapax Legomena) 
 ### IdentityPivotEngine & Dossier Unificado OSINT
 Genera objetivos de investigación unificada expandiendo cualquier handle hacia las plataformas soportadas (X, Bluesky, GitHub, Telegram, Reddit, Substack, YouTube, Hacker News, Mastodon) mediante `--pivot`.
 
+### MerkleAttestation & Sello Criptográfico Anti-Manipulación
+Calcula de forma determinista la raíz de Merkle SHA-256 (`merkle_root`) sobre todos los campos de evidencia indexados. Cualquier alteración posterior de un byte en el contenido o metadatos invalida la raíz, garantizando admisibilidad forense (`INV_C5_CANONICAL_ONTOLOGY` O1 y O8).
+
+### SentimentAffectEngine & Volatilidad Emocional
+Motor léxico puro de valencia y excitación emocional:
+- **Polaridad Media:** Puntuación normalizada en $[-1.0, +1.0]$.
+- **Volatilidad Emocional:** Desviación estándar de sentimiento entre comentarios.
+- **Alerta de Indignación Polarizada (Manufactured Outrage):** Detecta campañas hostiles coordinadas con fuerte sesgo negativo y alta volatilidad.
+
 ### ActorNetwork & Extracción de Grafos de Entidad
 Construye sobre la marcha el grafo de interacción social extrayendo menciones (`@usuario`, `u/autor`), dominios citados y relaciones de réplica/recomendación:
+- **Gephi XML GEXF:** Formato nativo de grafos para análisis de centralidad y comunidades (`--export-gexf`).
 - **Visualización Mermaid:** Exportación directa a diagramas compatibles con GitHub y editores Markdown (`--export-mermaid`).
-- **Graphviz DOT:** Topologías de red exportables a formatos vectoriales para Gephi o Graphviz (`--export-dot`).
+- **Graphviz DOT:** Topologías de red exportables a formatos vectoriales para Graphviz (`--export-dot`).
 
 ### Bóveda Local SQLite WAL
 Almacenamiento transaccional local (`~/.gemini/antigravity/socint_vault.db`) en modo WAL (Write-Ahead Logging), garantizando cero filtración de telemetría a infraestructuras en la nube.
@@ -85,7 +95,7 @@ Almacenamiento transaccional local (`~/.gemini/antigravity/socint_vault.db`) en 
 
 ### Requisitos
 - Python 3.9 o superior.
-- **Cero dependencias externas:** utiliza exclusivamente la biblioteca estándar (`urllib`, `sqlite3`, `xml.etree.ElementTree`, `re`, `json`, `math`, `html`, `argparse`).
+- **Cero dependencias externas:** utiliza exclusivamente la biblioteca estándar (`urllib`, `sqlite3`, `xml.etree.ElementTree`, `re`, `json`, `math`, `html`, `argparse`, `hashlib`).
 
 ### Instalación Rápida
 ```bash
@@ -118,6 +128,11 @@ socint --pivot "borjamoskv"
 socint --url "https://reddit.com/r/technology/comments/xyz123/title/" --burst-check --lexical-check
 ```
 
+### Exportación a Gephi GEXF y Diagrama Mermaid
+```bash
+socint --url "https://news.ycombinator.com/item?id=40000000" --network --export-gexf red.gexf --export-mermaid red.mmd
+```
+
 ### Generación de Dossier Forense Interactivo (Dashboard HTML Offline)
 ```bash
 socint --url "https://reddit.com/r/technology/comments/xyz123/title/" --format html -o dossier.html
@@ -126,11 +141,6 @@ socint --url "https://reddit.com/r/technology/comments/xyz123/title/" --format h
 ### Exportación Tabular para Datasets Forenses (CSV RFC 4180)
 ```bash
 socint --batch urls.txt --format csv -o dataset.csv
-```
-
-### Mapeo de Red de Actores y Exportación a Diagrama Mermaid
-```bash
-socint --url "https://news.ycombinator.com/item?id=40000000" --network --export-mermaid red.mmd
 ```
 
 ### Consulta de Bóveda Local SQLite
@@ -155,7 +165,7 @@ python3 tests/test_socint.py
 ```
 
 ```text
-=== SOCINT C5-REAL DETERMINISTIC TEST SUITE (30/30 OMNIVECTOR) ===
+=== SOCINT C5-REAL DETERMINISTIC TEST SUITE (35/35 OMNIVECTOR) ===
   [PASS] 01. X / Twitter URL Parsing (Tweets & Profiles)
   [PASS] 02. Substack URL Parsing (Posts & Publications)
   [PASS] 03. Reddit URL Parsing (Threads, Subreddits & Users)
@@ -186,8 +196,13 @@ python3 tests/test_socint.py
   [PASS] 28. LexicalDispersion & Hapax Legomena Richness (Anti-LLM Monotony)
   [PASS] 29. IdentityPivotEngine Cross-Platform Footprint Dossier Generation
   [PASS] 30. Full Omnivector Report Synthesis (Temporal + Lexical + Epistemic)
+  [PASS] 31. Merkle Root Hash & Cryptographic Tree Computation (Tamper-Proof)
+  [PASS] 32. ActorNetwork Gephi XML GEXF Graph Serialization
+  [PASS] 33. SentimentAffectEngine Valence & Polarity Scoring (Zero Dependencies)
+  [PASS] 34. SentimentAffectEngine Outrage & Emotional Volatility Detection
+  [PASS] 35. Full Omnivector Attestation Report (Merkle + Sentiment + Topology)
 
-[✓] ALL 30/30 OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.
+[✓] ALL 35/35 OMNIVECTOR VERIFICATION CHECKS PASSED DETERMINISTICALLY.
 ```
 
 ---
