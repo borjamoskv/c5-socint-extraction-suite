@@ -6,14 +6,27 @@
 **Por Borja Fernández Angulo**  
 *Investigador en Sistemas Complejos*
 
+[![CI Workflow](https://img.shields.io/badge/CI_Actions-40%2F40_Passing-brightgreen.svg)](https://github.com/borjamoskv/c5-socint-extraction-suite/actions)
 [![Python: 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20(Pure%20Stdlib)-orange.svg)](#zero-dependency-guarantee)
-[![Tests: 40/40](https://img.shields.io/badge/Tests-40%2F40%20Deterministic-brightgreen.svg)](#silicon-certification--testing)
 
 ---
 
-## 1. Visión General
+## 1. Architecture & Overview
+
+```mermaid
+flowchart TD
+    classDef ingest fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc
+    classDef engine fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#f8fafc
+    classDef sink fill:#450a0a,stroke:#f87171,stroke-width:2px,color:#f8fafc
+
+    A["11 Public Platforms<br/>(X · Substack · Reddit · YouTube · HN · Bluesky · Telegram · GitHub · Mastodon · Polymarket · Wikipedia)"]:::ingest --> B["Pure Python Stdlib Extractor<br/>(Zero External Dependencies)"]:::ingest
+    B --> C["Epistemic Tiering (Tiers 1-4) & SNR"]:::engine
+    B --> D["Astroturf Jaccard 3-Gram & CIB Burst Forensics"]:::engine
+    C --> E["SHA-256 Merkle Attestation · SQLite WAL · STIX 2.1"]:::sink
+    D --> E
+```
 
 `c5-socint-extraction-suite` es un motor soberano de extracción forense y análisis de telemetría discursiva diseñado para operar sin fricción técnica, sin necesidad de tokens de API de terceros y sin dependencias externas pesadas.
 
@@ -98,23 +111,18 @@ Almacenamiento transaccional local (`~/.gemini/antigravity/socint_vault.db`) en 
 
 ---
 
-## 4. Instalación y Uso
+## 4. Quickstart & Installation
 
-### Requisitos
-- Python 3.9 o superior.
-- **Cero dependencias externas:** utiliza exclusivamente la biblioteca estándar (`urllib`, `sqlite3`, `xml.etree.ElementTree`, `re`, `json`, `math`, `html`, `argparse`, `hashlib`).
-
-### Instalación Rápida
 ```bash
 git clone https://github.com/borjamoskv/c5-socint-extraction-suite.git
 cd c5-socint-extraction-suite
 pip install -e .
-```
-
-También puede ejecutarse directamente sin instalación:
-```bash
 ./bin/socint --help
 ```
+
+### Requisitos
+- Python 3.9 o superior.
+- **Cero dependencias externas:** utiliza exclusivamente la biblioteca estándar (`urllib`, `sqlite3`, `xml.etree.ElementTree`, `re`, `json`, `math`, `html`, `argparse`, `hashlib`).
 
 ---
 
@@ -224,9 +232,9 @@ python3 tests/test_socint.py
 
 ---
 
-## 7. Licencia
+## 7. License & Security
 
-Distribuido bajo licencia **MIT**. Consulte el archivo [LICENSE](LICENSE) para más detalles.
+Distribuido bajo licencia **MIT**. Consulte el archivo [LICENSE](LICENSE) y las directrices de seguridad y divulgación en `SECURITY.md` y `CONTRIBUTING.md`.
 
 ---
 
